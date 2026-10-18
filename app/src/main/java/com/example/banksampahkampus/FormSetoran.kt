@@ -24,6 +24,9 @@ fun FormMasukan() {
     var jenisSampah by remember { mutableStateOf("Plastik") }
     var berat by remember { mutableStateOf("") }
 
+    var errorNama by remember { mutableStateOf(false) }
+    var errorBerat by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -37,10 +40,14 @@ fun FormMasukan() {
 
         OutlinedTextField(
             value = namaPenyetor,
-            onValueChange = { namaPenyetor = it },
+            onValueChange = {
+                namaPenyetor = it
+                errorNama = it.isBlank()
+            },
             label = { Text("Nama penyetor") },
             modifier = Modifier.fillMaxWidth(),
-            singleLine = true
+            singleLine = true,
+            isError = errorNama
         )
 
         Text("Jenis sampah")
@@ -60,10 +67,14 @@ fun FormMasukan() {
 
         OutlinedTextField(
             value = berat,
-            onValueChange = { berat = it },
+            onValueChange = {
+                berat = it
+                errorBerat = it.toDoubleOrNull()?.let { nilai -> nilai <= 0 } ?: true
+            },
             label = { Text("Berat sampah (kg)") },
             modifier = Modifier.fillMaxWidth(),
-            singleLine = true
+            singleLine = true,
+            isError = errorBerat
         )
 
         Button(
