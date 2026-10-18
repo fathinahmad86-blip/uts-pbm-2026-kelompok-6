@@ -50,6 +50,13 @@ fun FormMasukan() {
             isError = errorNama
         )
 
+        if (errorNama) {
+            Text(
+                text = "Nama penyetor tidak boleh kosong",
+                color = MaterialTheme.colorScheme.error
+            )
+        }
+
         Text("Jenis sampah")
 
         Row(
@@ -76,6 +83,13 @@ fun FormMasukan() {
             singleLine = true,
             isError = errorBerat
         )
+
+        if (errorBerat) {
+            Text(
+                text = "Berat sampah harus berupa angka lebih dari 0",
+                color = MaterialTheme.colorScheme.error
+            )
+        }
 
         Button(
             onClick = {},
