@@ -44,4 +44,41 @@ class LogikaSampahTest {
 
         assertEquals(17600.0, hasil, 0.01)
     }
+    @Test
+    fun testHitungTotalBerat() {
+        val daftar = listOf(
+            SetoranSampah("Budi", "plastik", 2.0, false),
+            SetoranSampah("Andi", "kertas", 3.0, false),
+            SetoranSampah("Siti", "plastik", 4.0, true)
+        )
+
+        val hasil = hitungTotalBerat(daftar, "plastik")
+
+        assertEquals(6.0, hasil, 0.01)
+    }
+
+    @Test
+    fun testHitungSaldoPenyetor() {
+        val daftar = listOf(
+            SetoranSampah("Budi", "plastik", 2.0, false),
+            SetoranSampah(" budi ", "kertas", 1.0, false)
+        )
+
+        val hasil = hitungSaldoPenyetor(daftar)
+
+        assertEquals(8000.0, hasil["budi"]!!, 0.01)
+    }
+
+    @Test
+    fun testPenyetorSaldoTerbesar() {
+        val daftar = listOf(
+            SetoranSampah("Budi", "plastik", 2.0, false),
+            SetoranSampah("Siti", "logam", 3.0, false)
+        )
+
+        val hasil = penyetorSaldoTerbesar(daftar)
+
+        assertEquals("siti", hasil?.first)
+        assertEquals(24000.0, hasil?.second ?: 0.0, 0.01)
+    }
 }
