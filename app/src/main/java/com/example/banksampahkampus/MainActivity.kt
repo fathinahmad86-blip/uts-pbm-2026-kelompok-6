@@ -252,7 +252,6 @@ private fun BarisInfo(label: String, nilai: String) {
     }
 }
 
-
 private fun formatRupiah(nilai: Number): String {
     return NumberFormat.getCurrencyInstance(
         Locale.forLanguageTag("id-ID")
@@ -261,7 +260,6 @@ private fun formatRupiah(nilai: Number): String {
         minimumFractionDigits = 0
     }.format(nilai)
 }
-
 
 private fun formatBerat(nilai: Double): String {
     return String.format(Locale.US, "%.2f", nilai)
