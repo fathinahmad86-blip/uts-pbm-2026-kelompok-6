@@ -79,7 +79,13 @@ fun ItemSetoran(
                     )
                 } kg"
             )
-             
+            Text(
+                text = "Saldo: Rp${
+                    String.format(
+                        Locale("id", "ID"),
+                        "%,.0f",
+                        saldo
+                    )
            
                 }"
             )
