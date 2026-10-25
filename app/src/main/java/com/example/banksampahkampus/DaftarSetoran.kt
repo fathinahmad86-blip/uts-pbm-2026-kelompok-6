@@ -79,7 +79,6 @@ fun ItemSetoran(
                     )
                 } kg"
             )
-
             Text(
                 text = "Saldo: Rp${
                     String.format(
@@ -87,6 +86,7 @@ fun ItemSetoran(
                         "%,.0f",
                         saldo
                     )
+           
                 }"
             )
 
