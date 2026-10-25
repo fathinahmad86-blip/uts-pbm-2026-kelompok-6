@@ -3,7 +3,6 @@ package com.example.banksampahkampus
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,40 +10,44 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.banksampahkampus.ui.theme.BankSampahKampusTheme
 import java.text.NumberFormat
 import java.util.Locale
+
+private val HijauUtama = Color(0xFF216747)
+private val HijauMuda = Color(0xFFE8F5EC)
+private val AbuLatar = Color(0xFFF5F7F5)
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
 
         setContent {
-            BankSampahKampusTheme {
+            MaterialTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = AbuLatar
                 ) {
                     HalamanUtama()
                 }
@@ -55,14 +58,11 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun HalamanUtama() {
-    val daftarSetoran = remember {
-        mutableStateListOf<SetoranSampah>()
+    var daftarSetoran by remember {
+        mutableStateOf<List<SetoranSampah>>(emptyList())
     }
-
     var tampilkanForm by remember { mutableStateOf(false) }
     var tampilkanDaftar by remember { mutableStateOf(false) }
-
-    val jenisSampah = listOf("Plastik", "Kertas", "Logam", "Kaca")
 
     val totalBerat = daftarSetoran.sumOf { it.berat }
     val totalSaldo = daftarSetoran.sumOf {
@@ -73,173 +73,311 @@ fun HalamanUtama() {
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(20.dp),
+            .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Column {
-            Text(
-                text = "BANK SAMPAH KAMPUS",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
+        // Header aplikasi
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = HijauUtama
             )
-            Spacer(Modifier.height(6.dp))
-            Text("Kelola Setoran Sampah dengan Mudah")
-        }
-
-        Card(modifier = Modifier.fillMaxWidth()) {
+        ) {
             Column(
-                modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+                modifier = Modifier.padding(20.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = "Ringkasan Setoran",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
+                    text = "♻ Bank Sampah Kampus",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
                 )
-                BarisInfo("Jumlah Setoran", daftarSetoran.size.toString())
-                BarisInfo("Total Berat", "${formatBerat(totalBerat)} kg")
-                BarisInfo("Total Saldo", formatRupiah(totalSaldo))
+                Text(
+                    text = "Kelola setoran sampah dengan mudah",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.White
+                )
             }
         }
 
-        Card(modifier = Modifier.fillMaxWidth()) {
+        // Ringkasan
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            )
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Text(
+                    text = "Ringkasan Setoran",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    KolomRingkasan(
+                        judul = "Jumlah Setoran",
+                        nilai = "${daftarSetoran.size}",
+                        modifier = Modifier.weight(1f)
+                    )
+                    KolomRingkasan(
+                        judul = "Total Berat",
+                        nilai = "${formatBerat(totalBerat)} kg",
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = HijauMuda
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier.padding(14.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Text(
+                            text = "Total Saldo Penyetor",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        Text(
+                            text = formatRupiah(totalSaldo),
+                            style = MaterialTheme.typography.headlineSmall,
+                            color = HijauUtama,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+        }
+
+        // Daftar harga
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            )
+        ) {
             Column(
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 Text(
                     text = "Daftar Harga Sampah",
-                    fontSize = 18.sp,
+                    style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
 
-                jenisSampah.forEach { jenis ->
-                    BarisInfo(
-                        jenis,
-                        "${formatRupiah(hargaPerKg(jenis))}/kg"
-                    )
-                }
+                BarisHarga("Plastik", 3000.0)
+                BarisHarga("Kertas", 2000.0)
+                BarisHarga("Logam", 8000.0)
+                BarisHarga("Kaca", 1000.0)
 
                 Text(
-                    text = "Bonus 10% untuk sampah yang bersih dan terpilah",
-                    style = MaterialTheme.typography.bodySmall
+                    text = "Bonus 10% untuk sampah yang bersih dan terpilah.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = HijauUtama
                 )
             }
         }
 
+        // Tombol form
         Button(
-            onClick = { tampilkanForm = !tampilkanForm },
-            modifier = Modifier.fillMaxWidth()
+            onClick = {
+                tampilkanForm = !tampilkanForm
+                if (tampilkanForm) tampilkanDaftar = false
+            },
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = HijauUtama
+            )
         ) {
             Text(
-                if (tampilkanForm) "Tutup Form Setoran"
-                else "Tambah Setoran"
+                if (tampilkanForm) "Tutup Form" else "+ Tambah Setoran"
             )
         }
 
         if (tampilkanForm) {
-            Card(modifier = Modifier.fillMaxWidth()) {
-                FormSetoran(
-                    onSetoranDitambahkan = { setoran ->
-                        daftarSetoran.add(setoran)
-                        tampilkanForm = false
-                        tampilkanDaftar = false
-                    }
-                )
-            }
+            FormSetoran(
+                onSetoranDitambahkan = { setoran ->
+                    daftarSetoran = daftarSetoran + setoran
+                    tampilkanForm = false
+                    tampilkanDaftar = true
+                }
+            )
         }
 
+        // Daftar setoran
         OutlinedButton(
-            onClick = { tampilkanDaftar = !tampilkanDaftar },
+            onClick = {
+                tampilkanDaftar = !tampilkanDaftar
+                if (tampilkanDaftar) tampilkanForm = false
+            },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                if (tampilkanDaftar) "Tutup Daftar Setoran"
-                else "Lihat Daftar Setoran"
+                if (tampilkanDaftar) {
+                    "Sembunyikan Daftar"
+                } else {
+                    "Lihat Daftar Setoran"
+                }
             )
         }
 
         if (tampilkanDaftar) {
-            Card(modifier = Modifier.fillMaxWidth()) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    if (daftarSetoran.isEmpty()) {
-                        Text("Belum ada setoran.")
-                    } else {
-                        daftarSetoran.forEachIndexed { index, setoran ->
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 8.dp),
-                                verticalArrangement =
-                                    Arrangement.spacedBy(4.dp)
-                            ) {
-                                Text(
-                                    text = setoran.namaPenyetor,
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Text("Jenis: ${setoran.jenisSampah}")
-                                Text("Berat: ${formatBerat(setoran.berat)} kg")
-                                Text(
-                                    "Saldo: ${
-                                        formatRupiah(hitungTotalSetoran(setoran))
-                                    }"
-                                )
-                                Text(
-                                    if (setoran.bersihDanTerpilah) {
-                                        "Bersih dan terpilah"
-                                    } else {
-                                        "Belum mendapat bonus kebersihan"
-                                    }
-                                )
-
-                                OutlinedButton(
-                                    onClick = {
-                                        if (index in daftarSetoran.indices) {
-                                            daftarSetoran.removeAt(index)
-                                        }
-                                    },
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    Text("Hapus Setoran")
-                                }
-                            }
-                        }
+            DaftarSetoran(
+                daftarSetoran = daftarSetoran,
+                onHapus = { index ->
+                    daftarSetoran = daftarSetoran.filterIndexed {
+                            posisi, _ -> posisi != index
                     }
-                }
-            }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 400.dp)
+            )
         }
 
-        Card(modifier = Modifier.fillMaxWidth()) {
+        // Total berat per jenis
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            )
+        ) {
             Column(
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 Text(
                     text = "Total Berat per Jenis",
-                    fontSize = 18.sp,
+                    style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
 
-                jenisSampah.forEach { jenis ->
-                    val beratJenis = daftarSetoran
-                        .filter { it.jenisSampah == jenis }
-                        .sumOf { it.berat }
+                listOf("Plastik", "Kertas", "Logam", "Kaca")
+                    .forEach { jenis ->
+                        val beratJenis = hitungTotalBerat(
+                            daftarSetoran, jenis
+                        )
+                        BarisInformasi(
+                            label = jenis,
+                            nilai = "${formatBerat(beratJenis)} kg"
+                        )
+                    }
+            }
+        }
 
-                    BarisInfo(
-                        jenis,
-                        "${formatBerat(beratJenis)} kg"
-                    )
+        // Saldo setiap penyetor
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            )
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Text(
+                    text = "Saldo per Penyetor",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold
+                )
+
+                val saldoPenyetor =
+                    hitungSaldoPenyetor(daftarSetoran)
+                        .toList()
+                        .sortedByDescending { it.second }
+
+                if (saldoPenyetor.isEmpty()) {
+                    Text("Belum ada saldo penyetor.")
+                } else {
+                    saldoPenyetor.forEachIndexed { index, pasangan ->
+                        BarisInformasi(
+                            label = "${index + 1}. ${pasangan.first}",
+                            nilai = formatRupiah(pasangan.second)
+                        )
+                    }
+
+                    val terbesar =
+                        penyetorSaldoTerbesar(daftarSetoran)
+
+                    if (terbesar != null) {
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "Saldo tertinggi: " +
+                                    "${terbesar.first} — " +
+                                    formatRupiah(terbesar.second),
+                            color = HijauUtama,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
             }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+    }
+}
+
+@Composable
+private fun KolomRingkasan(
+    judul: String,
+    nilai: String,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier,
+        colors = CardDefaults.cardColors(
+            containerColor = AbuLatar
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            Text(
+                text = judul,
+                style = MaterialTheme.typography.bodySmall
+            )
+            Text(
+                text = nilai,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }
 
 @Composable
-private fun BarisInfo(label: String, nilai: String) {
+private fun BarisHarga(
+    jenis: String,
+    harga: Double
+) {
+    BarisInformasi(
+        label = jenis,
+        nilai = "${formatRupiah(harga)}/kg"
+    )
+}
+
+@Composable
+private fun BarisInformasi(
+    label: String,
+    nilai: String
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
             text = label,
@@ -247,20 +385,15 @@ private fun BarisInfo(label: String, nilai: String) {
         )
         Text(
             text = nilai,
-            fontWeight = FontWeight.SemiBold
+            fontWeight = FontWeight.Medium
         )
     }
 }
 
-private fun formatRupiah(nilai: Number): String {
-    return NumberFormat.getCurrencyInstance(
+fun formatRupiah(nilai: Double): String =
+    NumberFormat.getCurrencyInstance(
         Locale.forLanguageTag("id-ID")
-    ).apply {
-        maximumFractionDigits = 0
-        minimumFractionDigits = 0
-    }.format(nilai)
-}
+    ).format(nilai)
 
-private fun formatBerat(nilai: Double): String {
-    return String.format(Locale.US, "%.2f", nilai)
-}
+fun formatBerat(nilai: Double): String =
+    String.format(Locale.US, "%.2f", nilai)
