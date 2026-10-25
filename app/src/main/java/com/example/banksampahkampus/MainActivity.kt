@@ -342,9 +342,11 @@ fun HalamanUtama() {
                     if (terbesar != null) {
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = "Saldo tertinggi: " +
-                                    "${terbesar.first} — " +
-                                    formatRupiah(terbesar.second),
+                            text = stringResource(
+                                R.string.saldo_tertinggi,
+                                terbesar.first,
+                                formatRupiah(terbesar.second)
+                            ),
                             color = HijauUtama,
                             fontWeight = FontWeight.Bold
                         )
