@@ -53,7 +53,7 @@ fun DaftarSetoran(
 
 @Composable
 fun ItemSetoran(
-    setoran: SetoranSampah,
+    setoran: ,
     onHapus: () -> Unit
 ) {
     val saldo = hitungTotalSetoran(setoran)
