@@ -30,17 +30,26 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import java.text.NumberFormat
 import java.util.Locale
-
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 private val HijauUtama = Color(0xFF216747)
 private val HijauMuda = Color(0xFFE8F5EC)
 private val AbuLatar = Color(0xFFF5F7F5)
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
 
         setContent {
@@ -76,7 +85,7 @@ fun HalamanUtama() {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Header aplikasi
+// Header aplikasi
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(
@@ -84,17 +93,30 @@ fun HalamanUtama() {
             )
         ) {
             Column(
-                modifier = Modifier.padding(20.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logoharmaini),
+                    contentDescription = "Logo Bank Sampah Kampus",
+                    modifier = Modifier
+                        .height(90.dp)
+                        .fillMaxWidth(),
+                    contentScale = ContentScale.Fit
+                )
+
                 Text(
-                    text = "♻ Bank Sampah Kampus",
+                    text = stringResource(R.string.app_name),
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
+
                 Text(
-                    text = "Kelola setoran sampah dengan mudah",
+                    text = stringResource(R.string.app_tagline),
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.White
                 )
@@ -113,7 +135,7 @@ fun HalamanUtama() {
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Text(
-                    text = "Ringkasan Setoran",
+                    text = stringResource(R.string.ringkasan_setoran),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
@@ -123,12 +145,12 @@ fun HalamanUtama() {
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     KolomRingkasan(
-                        judul = "Jumlah Setoran",
+                        judul = stringResource(R.string.jumlah_setoran),
                         nilai = "${daftarSetoran.size}",
                         modifier = Modifier.weight(1f)
                     )
                     KolomRingkasan(
-                        judul = "Total Berat",
+                        judul = stringResource(R.string.total_berat),
                         nilai = "${formatBerat(totalBerat)} kg",
                         modifier = Modifier.weight(1f)
                     )
@@ -145,7 +167,7 @@ fun HalamanUtama() {
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         Text(
-                            text = "Total Saldo Penyetor",
+                            text = stringResource(R.string.total_saldo),
                             style = MaterialTheme.typography.bodyMedium
                         )
                         Text(
@@ -171,7 +193,7 @@ fun HalamanUtama() {
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 Text(
-                    text = "Daftar Harga Sampah",
+                    text = stringResource(R.string.daftar_harga),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
@@ -182,7 +204,7 @@ fun HalamanUtama() {
                 BarisHarga("Kaca", 1000.0)
 
                 Text(
-                    text = "Bonus 10% untuk sampah yang bersih dan terpilah.",
+                    text = stringResource(R.string.bonus_sampah),
                     style = MaterialTheme.typography.bodySmall,
                     color = HijauUtama
                 )
@@ -201,7 +223,11 @@ fun HalamanUtama() {
             )
         ) {
             Text(
-                if (tampilkanForm) "Tutup Form" else "+ Tambah Setoran"
+                if (tampilkanForm) {
+                    stringResource(R.string.tutup_form)
+                } else {
+                    stringResource(R.string.tambah_setoran)
+                }
             )
         }
 
@@ -225,9 +251,9 @@ fun HalamanUtama() {
         ) {
             Text(
                 if (tampilkanDaftar) {
-                    "Sembunyikan Daftar"
+                    stringResource(R.string.sembunyikan_daftar)
                 } else {
-                    "Lihat Daftar Setoran"
+                    stringResource(R.string.lihat_daftar)
                 }
             )
         }
@@ -258,7 +284,7 @@ fun HalamanUtama() {
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 Text(
-                    text = "Total Berat per Jenis",
+                    text = stringResource(R.string.total_berat_per_jenis),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
@@ -288,7 +314,7 @@ fun HalamanUtama() {
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 Text(
-                    text = "Saldo per Penyetor",
+                    text = stringResource(R.string.saldo_per_penyetor),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
@@ -299,7 +325,7 @@ fun HalamanUtama() {
                         .sortedByDescending { it.second }
 
                 if (saldoPenyetor.isEmpty()) {
-                    Text("Belum ada saldo penyetor.")
+                    Text(stringResource(R.string.belum_ada_saldo))
                 } else {
                     saldoPenyetor.forEachIndexed { index, pasangan ->
                         BarisInformasi(

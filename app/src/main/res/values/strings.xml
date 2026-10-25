@@ -1,3 +1,17 @@
 <resources>
-    <string name="app_name">BankSampahKampus</string>
+    <string name="app_name">Bank Sampah Kampus</string>
+    <string name="app_tagline">Kelola setoran sampah dengan mudah</string>
+    <string name="ringkasan_setoran">Ringkasan Setoran</string>
+    <string name="jumlah_setoran">Jumlah Setoran</string>
+    <string name="total_berat">Total Berat</string>
+    <string name="total_saldo">Total Saldo Penyetor</string>
+    <string name="daftar_harga">Daftar Harga Sampah</string>
+    <string name="bonus_sampah">Bonus 10% untuk sampah yang bersih dan terpilah.</string>
+    <string name="tambah_setoran">+ Tambah Setoran</string>
+    <string name="tutup_form">Tutup Form</string>
+    <string name="lihat_daftar">Lihat Daftar Setoran</string>
+    <string name="sembunyikan_daftar">Sembunyikan Daftar</string>
+    <string name="total_berat_per_jenis">Total Berat per Jenis</string>
+    <string name="saldo_per_penyetor">Saldo per Penyetor</string>
+    <string name="belum_ada_saldo">Belum ada saldo penyetor.</string>
 </resources>
