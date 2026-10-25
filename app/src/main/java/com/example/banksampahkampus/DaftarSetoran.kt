@@ -18,7 +18,11 @@ import androidx.compose.ui.unit.dp
 import java.util.Locale
 
 @Composable
-
+fun DaftarSetoran(
+    daftarSetoran: List<SetoranSampah>,
+    onHapus: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(modifier = modifier) {
 
         Text(
