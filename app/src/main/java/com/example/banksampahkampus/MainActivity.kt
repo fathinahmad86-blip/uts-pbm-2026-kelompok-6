@@ -43,6 +43,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.Image
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.layout.width
+
 private val HijauUtama = Color(0xFF216747)
 private val HijauMuda = Color(0xFFE8F5EC)
 private val AbuLatar = Color(0xFFF5F7F5)
@@ -103,8 +105,8 @@ fun HalamanUtama() {
                     painter = painterResource(id = R.drawable.logoharmaini),
                     contentDescription = "Logo Bank Sampah Kampus",
                     modifier = Modifier
-                        .height(90.dp)
-                        .fillMaxWidth(),
+                        .width(90.dp)
+                        .height(90.dp),
                     contentScale = ContentScale.Fit
                 )
 
